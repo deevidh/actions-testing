@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Read version from file
+      id: read_version
+      run: |
+        VERSION=$(cat version.txt)
+        echo "Version: $VERSION"
+        echo "::set-output name=VERSION::$VERSION"
+
+    - name: Create tag
+      id: create_tag
+      run: |
+        VERSION=${{ steps.read_version.outputs.VERSION }}
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git tag -a "v$VERSION" -m "Version $VERSION"
+        git push origin "v$VERSION"
