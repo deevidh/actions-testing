@@ -3,6 +3,11 @@ on:
     branches:
       - main
 
+# Optional permissions block to reduce scope of permissions available to the workflow using the $GITHUB_TOKEN
+permissions:
+  contents:
+    write # Required to add a tag
+
 jobs:
   tag_commit:
     runs-on: ubuntu-latest
